@@ -3,6 +3,7 @@ var express = require('express');
 const productHelpers = require('../helpers/product-helpers');
 var router = express.Router();
 var productHelper = require('../helpers/product-helpers')
+var fs = require('fs');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -34,6 +35,7 @@ router.get('/delete-product/:id', (req,res)=>{
   productHelpers.deleteProduct(prdctId).then((response)=>{
     res.redirect('/admin/')
   })
+  fs.unlinkSync('./public/product-images/'+prdctId+'.jpg');
   // console.log(prdctId);
 })
 
