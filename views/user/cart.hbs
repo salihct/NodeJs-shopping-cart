@@ -1,8 +1,8 @@
-{{#if products}}
+{{!-- {{#if !products}}
 <div>
     <h3 class="text-center">Cart is empty</h3>
 </div>
-{{/if}}
+{{/if}} --}}
 <section>
     <div class="container">
         <table class="table mt-5">
@@ -17,10 +17,12 @@
         <tbody>
             {{#each products}}
             <tr>
+                {{#each this.product}}
                 <td><img style="width: 70px; height:70px" src="/product-images/{{this._id}}.jpg" alt="{{this.name}}"></td>
                 <td>{{this.name}}</td>
+                {{/each}}
                 <td>
-                    <button class="cart-item-count mr-3">-</button>1<button class="cart-item-count mr-3">+</button>   
+                    <button class="cart-item-count mr-3">-</button>{{this.quantity}}<button class="cart-item-count ml-3">+</button>   
                 </td>
                 <td>
                     <a href="" class="btn btn-danger">Remove</a>
