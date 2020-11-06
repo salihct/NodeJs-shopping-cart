@@ -8,7 +8,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{this.name}}</h5>
                         <p class="card-text">{{this.discription}}</p>
-                        <a href="/add-to-cart/{{this._id}}" class="btn btn-warning">Add to cart</a>
+                        <button class="btn btn-warning" onclick="addToCart('{{this._id}}')">Add to cart</button>
                     </div>
                 </div>
             </div>
