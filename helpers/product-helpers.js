@@ -33,7 +33,7 @@ module.exports = {
                 $set: {
                     name: product.name,
                     category: product.category,
-                    price: product.price,
+                    price: parseFloat(product.price),
                     discription: product.discription
                 }
             }).then((response)=>{

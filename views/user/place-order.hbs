@@ -1,0 +1,68 @@
+<section>
+    <div class="container">
+        <div class="col-md-8 offset-md-2">
+            <h4 class="mb-3 text-center mt-4">Billing address</h4>
+            <form >
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="firstName">First name</label>
+                        <input type="text" class="form-control" name="firstName">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="lastName">Last name</label>
+                        <input type="text" class="form-control" name="lastName">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="username">Username</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">@</span>
+                        </div>
+                        <input type="text" class="form-control" name="username">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email">Email <span class="text-muted">(Optional)</span></label>
+                    <input type="email" class="form-control" name="email" placeholder="you@example.com">
+                </div>
+
+                <div class="mb-3">
+                    <label for="address">Address</label>
+                    <input type="text" class="form-control" name="address" placeholder="1234 Main St" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
+                    <input type="text" class="form-control" name="address2" placeholder="Apartment or suite">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="zip">Pin</label>
+                    <input type="text" class="form-control" name="zip" placeholder="" required>
+                </div>
+        
+        <hr class="mb-4">
+        <h5>Total Amount Rs.{{total}}</h5>
+        <h4 class="mb-3">Payment</h4>
+
+        <div class="d-block my-3">
+            <div class="custom-control custom-radio">
+                <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked>
+                <label class="custom-control-label" for="credit">Credit card</label>
+            </div>
+            <div class="custom-control custom-radio">
+                <input id="debit" name="paymentMethod" type="radio" class="custom-control-input">
+                <label class="custom-control-label" for="debit">Debit card</label>
+            </div>
+            <div class="custom-control custom-radio">
+                <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input">
+                <label class="custom-control-label" for="paypal">PayPal</label>
+            </div>
+        </div>
+        <hr class="mb-4">
+        <button class="btn btn-primary btn-lg btn-block mb-4" type="submit">Continue to checkout</button>
+        </form>
+    </div>
+</section>

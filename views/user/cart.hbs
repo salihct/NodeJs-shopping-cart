@@ -10,6 +10,7 @@
             <tr>
             <th scope="col">Item</th>
             <th scope="col">Name</th>
+            <th scope="col">Price</th>
             <th scope="col">Quantity</th>
             <th></th>
             </tr>
@@ -17,19 +18,26 @@
         <tbody>
             {{#each products}}
             <tr>
-                {{#each this.product}}
-                <td><img style="width: 70px; height:70px" src="/product-images/{{this._id}}.jpg" alt="{{this.name}}"></td>
-                <td>{{this.name}}</td>
-                {{/each}}
+                <td><img style="width: 70px; height:70px" src="/product-images/{{this.product._id}}.jpg" alt="{{this.product.name}}"></td>
+                <td>{{this.product.name}}</td>
+                <td>Rs.{{this.product.price}}</td>
                 <td>
-                    <button class="cart-item-count mr-3">-</button>{{this.quantity}}<button class="cart-item-count ml-3">+</button>   
+                    <button class="cart-item-count mr-3" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user}}',-1)">-</button>
+                    <span id="{{this.product._id}}">{{this.quantity}}</span>
+                    <button class="cart-item-count ml-3" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user}}',1)">+</button>   
                 </td>
                 <td>
-                    <a href="" class="btn btn-danger">Remove</a>
+                    <button class="btn btn-danger" onclick="removeItem('{{this._id}}','{{this.product._id}}')">Remove</button>
                 </td>
             </tr>
             {{/each}}
         </tbody>
         </table>
+        <hr>
+        <div class="float-right pr-5">
+            <h5 class="float-left mr-5">TOTAL: Rs.<span id="total">{{total}}</span></h3><br>
+            <a href="/place-order" class="btn btn-success mt-3" style="width: 100%;"><b>Place Order</b></a>
+        </div>
+        
     </div>
 </section>
