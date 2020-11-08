@@ -2,7 +2,7 @@
     <div class="container">
         <div class="col-md-8 offset-md-2">
             <h4 class="mb-3 text-center mt-4">Billing address</h4>
-            <form >
+            <form id="checkout-form">
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="firstName">First name</label>
@@ -31,7 +31,7 @@
 
                 <div class="mb-3">
                     <label for="address">Address</label>
-                    <input type="text" class="form-control" name="address" placeholder="1234 Main St" required>
+                    <input type="text" class="form-control" name="address" placeholder="1234 Main St">
                 </div>
 
                 <div class="mb-3">
@@ -40,29 +40,26 @@
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="zip">Pin</label>
-                    <input type="text" class="form-control" name="zip" placeholder="" required>
+                    <input type="text" class="form-control" name="zip" placeholder="" >
                 </div>
-        
-        <hr class="mb-4">
-        <h5>Total Amount Rs.{{total}}</h5>
-        <h4 class="mb-3">Payment</h4>
+                <input type="text" name="userId" value="{{user._id}}" hidden>
+                <hr class="mb-4">
+                <h5>Total Amount Rs.{{total}}</h5>
+                <h4 class="mb-3">Payment</h4>
 
-        <div class="d-block my-3">
-            <div class="custom-control custom-radio">
-                <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked>
-                <label class="custom-control-label" for="credit">Credit card</label>
-            </div>
-            <div class="custom-control custom-radio">
-                <input id="debit" name="paymentMethod" type="radio" class="custom-control-input">
-                <label class="custom-control-label" for="debit">Debit card</label>
-            </div>
-            <div class="custom-control custom-radio">
-                <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input">
-                <label class="custom-control-label" for="paypal">PayPal</label>
-            </div>
+                <div class="d-block my-3">
+                    <div class="custom-control custom-radio">
+                        <input id="cod" name="paymentMethod" type="radio" class="custom-control-input" value="COD" checked>
+                        <label class="custom-control-label" for="credit">COD</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input id="online" name="paymentMethod" type="radio" class="custom-control-input" value="ONLINE">
+                        <label class="custom-control-label" for="debit">Pay Online</label>
+                    </div>
+                </div>
+                <hr class="mb-4">
+                <button class="btn btn-primary btn-lg btn-block mb-4" type="submit">Continue to checkout</button>
+            </form>
         </div>
-        <hr class="mb-4">
-        <button class="btn btn-primary btn-lg btn-block mb-4" type="submit">Continue to checkout</button>
-        </form>
     </div>
 </section>

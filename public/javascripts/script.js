@@ -51,3 +51,15 @@ function removeItem(cartId,prdctId){
         }
     })
 }
+
+$("#checkout-form").submit((e)=>{
+    e.preventDefault()
+    $.ajax({
+        url:'/place-order',
+        method:'POST',
+        data:$("#checkout-form").serialize(),
+        success:(response)=>{
+            alert(response)
+        }
+    })
+})
