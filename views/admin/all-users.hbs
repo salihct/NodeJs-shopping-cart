@@ -1,0 +1,22 @@
+<section>
+    <div class="container">
+        <table class="table mt-5">
+        <thead>
+            <tr>
+            <th scope="col">First Name</th>
+            <th>Last Name</th>
+            <th scope="col">Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each orders}}
+            <tr>
+                <th>{{fname}}</th>
+                <th>{{lname}}</th>
+                <th>{{email}}</th>
+            </tr>
+            {{/each}}
+        </tbody>
+        </table>
+    </div>
+</section>

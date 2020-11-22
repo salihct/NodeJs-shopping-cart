@@ -1,11 +1,9 @@
-const { response, json } = require('express');
 var express = require('express');
 var router = express.Router();
 const productHelper = require('../helpers/product-helpers');
-const userHelpers = require('../helpers/user-helpers');
 const userHelper = require('../helpers/user-helpers')
 const verifyLoggIn = (req,res,next) =>{
-  if(req.session.loggedIn){
+  if(req.session.user){
     next()
   }else{
     res.redirect('/login')
@@ -25,11 +23,11 @@ router.get('/', async function(req, res, next) {
 });
 
 router.get('/login', (req,res)=>{
-  if(req.session.loggedIn){
+  if(req.session.user){
     res.redirect('/')
   }else{
-    res.render('user/login',{"loginErr": req.session.logginErr})
-    req.session.logginErr = false
+    res.render('user/login',{"loginErr": req.session.userLogginErr})
+    req.session.userLogginErr = false
   }
 })
 
@@ -40,8 +38,8 @@ router.get('/signup', (req,res)=>{
 router.post('/signup', (req,res)=>{
   userHelper.doSignup(req.body).then((response)=>{
     // console.log(response);
-    req.session.loggedIn=true
     req.session.user = response.user
+    req.session.user.loggedIn=true
     res.redirect('/')
   })
 })
@@ -49,25 +47,25 @@ router.post('/signup', (req,res)=>{
 router.post('/login', (req,res)=>{
   userHelper.doLogin(req.body).then((response)=>{
     if(response.status){
-      req.session.loggedIn=true
       req.session.user = response.user
+      req.session.user.loggedIn=true
       res.redirect('/')
     }else{
-      req.session.logginErr = "Invalid email or password"
+      req.session.userLogginErr = "Invalid email or password"
       res.redirect('/login')
     }
   })
 })
 
 router.get('/logout', (req,res)=>{
-  req.session.destroy()
+  req.session.user = null
   res.redirect('/')
 })
 
 router.get('/cart', verifyLoggIn, async(req,res) => {
   let products = await userHelper.getCartProducts(req.session.user._id)
   let total = 0
-  if(products.lenngth > 0){
+  if(products.length > 0){
     total = await userHelper.getTotalAmount(req.session.user._id)
   }
   res.render('user/cart', {products, user: req.session.user._id, total})

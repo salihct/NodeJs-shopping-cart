@@ -1,11 +1,8 @@
 var db = require('../config/connection')
 var collection = require('../config/collections')
 const bcrypt = require('bcrypt')
-const { response } = require('express')
 var objectId = require('mongodb').ObjectID
 const Razorpay = require('razorpay')
-const { resolve } = require('path')
-const collections = require('../config/collections')
 var instance = new Razorpay({
     key_id: 'rzp_test_NDtsOV7RgyowuD',
     key_secret: 'swHbevObE4Bc3wjopdm4U2a7',
@@ -59,7 +56,7 @@ module.exports = {
                     .updateOne({user:objectId(userId), 'products.item': objectId(prdctId)},
                     {
                         $inc: {'products.$.quantity': 1}
-                    }).then((response)=>{
+                    }).then(()=>{
                         // console.log(response);
                         resolve()
                     })
@@ -203,15 +200,17 @@ module.exports = {
                     }
                 ]).toArray()
                 resolve(total[0].total)
-            }else resolve()          
+            }        
         })
     },
     placeOrder: (details,products,total)=>{
         return new Promise((resolve,reject)=>{
             let status = details.paymentMethod === 'COD' ? 'placed' : 'pending'
+            var date = new Date()
+            date = date.toLocaleFormat('%A, %B %e, %Y');
             let orderObj = {
                 deliveryDetails: {
-                    name: details.firstname,
+                    name: details.firstName + details.lastName,
                     address: details.address,
                     address2: details.address2,
                     pin: details.zip 
