@@ -117,3 +117,7 @@ function verifyPayment(payment,order) {
         }
     })
 }
+
+$(document).ready( function () {
+    $('#viewproducts').DataTable();
+});

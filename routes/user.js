@@ -3,7 +3,7 @@ var router = express.Router();
 const productHelper = require('../helpers/product-helpers');
 const userHelper = require('../helpers/user-helpers')
 const verifyLoggIn = (req,res,next) =>{
-  if(req.session.user){
+  if(req.session.userLoggedIn){
     next()
   }else{
     res.redirect('/login')
@@ -39,7 +39,7 @@ router.post('/signup', (req,res)=>{
   userHelper.doSignup(req.body).then((response)=>{
     // console.log(response);
     req.session.user = response.user
-    req.session.user.loggedIn=true
+    req.session.userLoggedIn=true
     res.redirect('/')
   })
 })
@@ -48,7 +48,7 @@ router.post('/login', (req,res)=>{
   userHelper.doLogin(req.body).then((response)=>{
     if(response.status){
       req.session.user = response.user
-      req.session.user.loggedIn=true
+      req.session.userLoggedIn=true
       res.redirect('/')
     }else{
       req.session.userLogginErr = "Invalid email or password"
