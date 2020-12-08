@@ -95,7 +95,7 @@ function payOnline(order) {
     var rzp1 = new Razorpay(options);
     rzp1.open()
     rzp1.on('payment.failed', function (response){
-
+        response.status=false
     });
     
 }
@@ -112,7 +112,8 @@ function verifyPayment(payment,order) {
             if(response.status){
                 location.href='/order-success'
             }else{
-                alert("Paymet failed")
+                alert("Paymet failed"),
+                location.href='/place-order'
             }
         }
     })

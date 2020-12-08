@@ -3,6 +3,7 @@ var collection = require('../config/collections')
 const bcrypt = require('bcrypt')
 var objectId = require('mongodb').ObjectID
 const Razorpay = require('razorpay')
+const collections = require('../config/collections')
 var instance = new Razorpay({
     key_id: 'rzp_test_NDtsOV7RgyowuD',
     key_secret: 'swHbevObE4Bc3wjopdm4U2a7',
@@ -42,10 +43,15 @@ module.exports = {
             }
         })
     },
-    addToCart: (prdctId,userId)=>{
+    addToCart: async(prdctId,userId)=>{
+        let product = await db.get().collection(collection.PRODUCT_COLECTION).findOne({_id: objectId(prdctId)})
         let prdctObj ={
             item: objectId(prdctId),
-            quantity: 1
+            quantity: 1,
+            price: product.price,
+            name: product.name,
+            discription: product.discription,
+            category: product.category
         }
         return new Promise(async(resolve,reject)=>{
             let userCart = await db.get().collection(collection.CART_COLECTION).findOne({user: objectId(userId)})
@@ -118,8 +124,12 @@ module.exports = {
         return new Promise(async(resolve,reject)=>{
             let count = 0
             let cart = await db.get().collection(collection.CART_COLECTION).findOne({user: objectId(userId)})
+            let i = 0;
             if(cart) {
-                count = cart.products.length
+                for(i; i < cart.products.length; i+=1){
+                    count += cart.products[i].quantity
+                }
+                // count = cart.products.length
             }
             resolve(count)
         })
@@ -206,8 +216,8 @@ module.exports = {
     placeOrder: (details,products,total)=>{
         return new Promise((resolve,reject)=>{
             let status = details.paymentMethod === 'COD' ? 'placed' : 'pending'
-            var date = new Date()
-            date = date.toLocaleFormat('%A, %B %e, %Y');
+            // var date = new Date()
+            // date = date.toLocaleFormat('%A, %B %e, %Y');
             let orderObj = {
                 deliveryDetails: {
                     name: details.firstName + details.lastName,
@@ -242,34 +252,36 @@ module.exports = {
     },
     getOrderProducts:(orderId)=>{
         return new Promise(async(resolve,reject)=>{
-            let orderItems = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
-                {
-                    $match: {_id: objectId(orderId)}
-                },
-                {
-                    $unwind: '$products'
-                },
-                {
-                    $project: {
-                        item: '$products.item',
-                        quantity: '$products.quantity'
-                    }
-                },
-                {
-                    $lookup:{
-                        from: collection.PRODUCT_COLECTION,
-                        localField: 'item',
-                        foreignField: '_id',
-                        as: 'product'
-                    }
-                },
-                {
-                    $project: {
-                        item:1, quantity:1, product:{$arrayElemAt:['$product',0]}
-                    }
-                }
-            ]).toArray() 
-            resolve(orderItems)
+            orderDetails = await db.get().collection(collections.ORDER_COLLECTION).findOne({_id: objectId(orderId)})
+            resolve(orderDetails)
+            // let orderItems = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+            //     {
+            //         $match: {_id: objectId(orderId)}
+            //     },
+            //     {
+            //         $unwind: '$products'
+            //     },
+            //     {
+            //         $project: {
+            //             item: '$products.item',
+            //             quantity: '$products.quantity'
+            //         }
+            //     },
+            //     {
+            //         $lookup:{
+            //             from: collection.PRODUCT_COLECTION,
+            //             localField: 'item',
+            //             foreignField: '_id',
+            //             as: 'product'
+            //         }
+            //     },
+            //     {
+            //         $project: {
+            //             item:1, quantity:1, product:{$arrayElemAt:['$product',0]}
+            //         }
+            //     }
+            // ]).toArray() 
+            // resolve(orderItems)
         })
     },
     generateRazorpay: (orderId, totalAmount)=>{

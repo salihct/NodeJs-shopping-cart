@@ -79,8 +79,13 @@ router.get('/add-to-cart/:id', (req,res) => {
 
 router.post('/change-product-quantity',(req,res,next)=>{
   userHelper.changeProductQuantity(req.body).then(async(response)=>{
-    response.total = await userHelper.getTotalAmount(req.body.user)
-    res.json(response)
+    if(response.removeProduct){
+      res.json(response)
+    }else{
+      response.total = await userHelper.getTotalAmount(req.body.user)
+      
+    }
+    
   })
 })
 
@@ -116,14 +121,15 @@ router.get('/order-success',(req,res)=>{
   res.render('user/order-success',{user: req.session.user})
 })
 
-router.get('/orders',async(req,res)=>{
+router.get('/orders',verifyLoggIn,async(req,res)=>{
   let orders = await userHelper.getUserOrders(req.session.user._id)
   res.render('user/orders',{user: req.session.user, orders})
 })
 
 router.get('/view-order-products/:id',async(req,res)=>{
-  let products = await userHelper.getOrderProducts(req.params.id)
-  res.render('user/view-order-products',{user: req.session.user, products})
+  let orderdetails = await userHelper.getOrderProducts(req.params.id)
+  // console.log(orderdetails);
+  res.render('user/view-order-products',{user: req.session.user, orderdetails})
 })
 
 router.post('/verify-payment',(req,res)=>{

@@ -1,8 +1,4 @@
-{{!-- {{#if !products}}
-<div>
-    <h3 class="text-center">Cart is empty</h3>
-</div>
-{{/if}} --}}
+{{#if products}}
 <section>
     <div class="container">
         <table class="table mt-5">
@@ -41,3 +37,11 @@
         
     </div>
 </section>
+
+{{else}}
+<div class="container text-center">
+    <h3 class="text-center">Cart is empty!</h3>
+    <a href="/" class="btn btn-primary mt-2">Add products</a>
+</div>
+
+{{/if}}
